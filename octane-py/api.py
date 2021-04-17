@@ -47,3 +47,8 @@ class Octane:
 
         results = self._get_results(endpoint, params).get('events')
         return results
+
+    def get_event(self, event_id: str):
+        endpoint = f'{API_BASE_URL}/events/{event_id}'
+        result = self._get_results(endpoint, {})
+        return result
