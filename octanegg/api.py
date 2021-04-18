@@ -19,7 +19,7 @@ class Octane:
     def close(self):
         self.session.close()
 
-    def _get_results(self, endpoint: str, params: dict) -> dict:
+    def _get_results(self, endpoint: str, params: Optional[dict] = None) -> dict:
         res = self.session.get(endpoint, params=params)
         res.raise_for_status()
         return res.json()
@@ -51,7 +51,7 @@ class Octane:
 
     def get_event(self, event_id: str) -> dict:
         endpoint = f'{API_BASE_URL}/events/{event_id}'
-        result = self._get_results(endpoint, {})
+        result = self._get_results(endpoint)
         return result
 
     def get_matches(self, after: Union[str, date], before: Optional[Union[str, date]] = None,
@@ -66,3 +66,8 @@ class Octane:
 
         results = self._get_results(endpoint, params).get('matches')
         return results
+
+    def get_match(self, match_id: str) -> dict:
+        endpoint = f'{API_BASE_URL}/matches/{match_id}'
+        result = self._get_results(endpoint)
+        return result
