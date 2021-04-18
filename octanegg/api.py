@@ -71,3 +71,18 @@ class Octane:
         endpoint = f'{API_BASE_URL}/matches/{match_id}'
         result = self._get_results(endpoint)
         return result
+
+    def get_games(self, event: Optional[str] = None, match: Optional[str] = None,
+                  sort: Optional[str] = None, order: Optional[str] = None, page: Optional[int] = None,
+                  per_page: Optional[str] = '20') -> list:
+        endpoint = f'{API_BASE_URL}/games'
+        other_params = {'event', 'match', 'sort', 'order', 'page'}
+        params = {k: v for k, v in locals().items() if (k in other_params) and (v is not None)}
+
+        results = self._get_results(endpoint, params).get('games')
+        return results
+
+    def get_game(self, game_id: str) -> dict:
+        endpoint = f'{API_BASE_URL}/games/{game_id}'
+        result = self._get_results(endpoint)
+        return result
