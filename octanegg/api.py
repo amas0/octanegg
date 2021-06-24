@@ -120,11 +120,12 @@ class Octane:
 
     def get_teams(self, name: Optional[str] = None, sort: Optional[str] = None,
                   order: Optional[str] = None, page: Optional[int] = None,
-                  per_page: Optional[str] = '20') -> list:
+                  per_page: Optional[int] = 100) -> list:
         endpoint = f'{API_BASE_URL}/teams'
-        other_params = {'name', 'sort', 'order', 'page'}
+        param_names = {'name', 'sort', 'order', 'page'}
 
-        params = {k: v for k, v in locals().items() if (k in other_params) and (v is not None)}
+        params = {'perPage': per_page}
+        params |= {k: v for k, v in locals().items() if (k in param_names) and (v is not None)}
 
         results = self._get_results(endpoint, params).get('teams')
         return results
@@ -132,4 +133,9 @@ class Octane:
     def get_team(self, team_id: str) -> dict:
         endpoint = f'{API_BASE_URL}/teams/{team_id}'
         result = self._get_results(endpoint)
+        return result
+
+    def get_active_teams(self):
+        endpoint = f'{API_BASE_URL}/teams/active'
+        result = self._get_results(endpoint).get('teams')
         return result
