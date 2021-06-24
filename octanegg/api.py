@@ -1,4 +1,4 @@
-from typing import Optional, Union
+from typing import Optional
 
 import requests
 
@@ -145,7 +145,7 @@ class Octane:
                            nationality: Optional[str] = None, tier: Optional[str] = None, region: Optional[str] = None,
                            mode: Optional[int] = None, group: Optional[str] = None, before: Optional[str] = None,
                            after: Optional[str] = None, best_of: Optional[int] = None, player: Optional[str] = None,
-                           team: Optional[str] = None) -> dict:
+                           team: Optional[str] = None) -> list:
         endpoint = f'{API_BASE_URL}/records/players'
         param_names = {'type', 'stat', 'event', 'stage', 'match', 'qualifier', 'winner', 'nationality', 'tier',
                        'region', 'mode', 'group', 'before', 'after', 'player', 'team'}
@@ -161,7 +161,7 @@ class Octane:
                          nationality: Optional[str] = None, tier: Optional[str] = None, region: Optional[str] = None,
                          mode: Optional[int] = None, group: Optional[str] = None, before: Optional[str] = None,
                          after: Optional[str] = None, best_of: Optional[int] = None,
-                         team: Optional[str] = None) -> dict:
+                         team: Optional[str] = None) -> list:
         endpoint = f'{API_BASE_URL}/records/teams'
         param_names = {'type', 'stat', 'event', 'stage', 'match', 'qualifier', 'winner', 'nationality', 'tier',
                        'region', 'mode', 'group', 'before', 'after', 'player', 'team'}
@@ -172,3 +172,32 @@ class Octane:
         results = self._get_results(endpoint, params).get('records')
         return results
 
+    def get_game_records(self, event: Optional[str] = None, stage: Optional[int] = None, match: Optional[str] = None,
+                         qualifier: Optional[bool] = None, tier: Optional[str] = None, region: Optional[str] = None,
+                         mode: Optional[int] = None, group: Optional[str] = None, before: Optional[str] = None,
+                         after: Optional[str] = None, best_of: Optional[str] = None, player: Optional[str] = None,
+                         team: Optional[str] = None) -> list:
+        endpoint = f'{API_BASE_URL}/records/games'
+        param_names = {'event', 'stage', 'match', 'qualifier', 'tier', 'region', 'mode', 'group',
+                       'before', 'after', 'player', 'team'}
+
+        params = {'bestOf': best_of}
+        params |= {k: v for k, v in locals().items() if (k in param_names) and (v is not None)}
+
+        results = self._get_results(endpoint, params).get('records')
+        return results
+
+    def get_series_records(self, event: Optional[str] = None, stage: Optional[int] = None, match: Optional[str] = None,
+                         qualifier: Optional[bool] = None, tier: Optional[str] = None, region: Optional[str] = None,
+                         mode: Optional[int] = None, group: Optional[str] = None, before: Optional[str] = None,
+                         after: Optional[str] = None, best_of: Optional[str] = None, player: Optional[str] = None,
+                         team: Optional[str] = None) -> list:
+        endpoint = f'{API_BASE_URL}/records/series'
+        param_names = {'event', 'stage', 'match', 'qualifier', 'tier', 'region', 'mode', 'group',
+                       'before', 'after', 'player', 'team'}
+
+        params = {'bestOf': best_of}
+        params |= {k: v for k, v in locals().items() if (k in param_names) and (v is not None)}
+
+        results = self._get_results(endpoint, params).get('records')
+        return results
