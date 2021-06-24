@@ -26,7 +26,7 @@ class Octane:
     def get_events(self, name: Optional[str] = None, tier: Optional[str] = None, region: Optional[str] = None,
                    mode: Optional[int] = None, group: Optional[str] = None, before: Optional[str] = None,
                    after: Optional[str] = None, date: Optional[str] = None, sort: Optional[str] = None,
-                   order: Optional[str] = None, page: int = 1, per_page: int = 50) -> list:
+                   order: Optional[str] = None, page: int = 1, per_page: int = 100) -> list:
         endpoint = f'{API_BASE_URL}/events'
         param_names = {'name', 'tier', 'region', 'mode', 'group', 'before', 'after', 'date', 'sort',
                        'order', 'page'}
@@ -58,7 +58,7 @@ class Octane:
                     best_of: Optional[int] = None, reverse_sweep: Optional[bool] = None,
                     reverse_sweep_attempt: Optional[bool] = None, player: Optional[str] = None,
                     team: Optional[str] = None, sort: Optional[str] = None, order: Optional[str] = None,
-                    page: int = 1, per_page: int = 50) -> list:
+                    page: int = 1, per_page: int = 100) -> list:
         endpoint = f'{API_BASE_URL}/matches'
         param_names = {'event', 'stage', 'qualifier', 'tier', 'region', 'mode', 'group', 'before', 'after',
                        'player', 'team', 'sort', 'order', 'page'}
@@ -80,12 +80,18 @@ class Octane:
         result = self._get_results(endpoint).get('games')
         return result
 
-    def get_games(self, event: Optional[str] = None, match: Optional[str] = None,
-                  sort: Optional[str] = None, order: Optional[str] = None, page: Optional[int] = None,
-                  per_page: Optional[str] = '20') -> list:
+    def get_games(self, event: Optional[str] = None, stage: Optional[int] = None, match: Optional[str] = None,
+                  qualifier: Optional[bool] = None, tier: Optional[str] = None, region: Optional[str] = None,
+                  mode: Optional[int] = None, group: Optional[str] = None, before: Optional[str] = None,
+                  after: Optional[str] = None, best_of: Optional[int] = None,
+                  player: Optional[str] = None, team: Optional[str] = None, sort: Optional[str] = None,
+                  order: Optional[str] = None, page: int = 1, per_page: int = 100) -> list:
         endpoint = f'{API_BASE_URL}/games'
-        other_params = {'event', 'match', 'sort', 'order', 'page'}
-        params = {k: v for k, v in locals().items() if (k in other_params) and (v is not None)}
+        param_names = {'event', 'stage', 'match', 'qualifier', 'tier', 'region', 'mode', 'group',
+                       'before', 'after', 'player', 'team', 'sort', 'order', 'page'}
+
+        params = {'bestOf': best_of, 'perPage': per_page}
+        params |= {k: v for k, v in locals().items() if (k in param_names) and (v is not None)}
 
         results = self._get_results(endpoint, params).get('games')
         return results
