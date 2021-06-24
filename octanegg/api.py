@@ -139,3 +139,36 @@ class Octane:
         endpoint = f'{API_BASE_URL}/teams/active'
         result = self._get_results(endpoint).get('teams')
         return result
+
+    def get_player_records(self, type: str, stat: str, event: Optional[str] = None, stage: Optional[int] = None,
+                           match: Optional[str] = None, qualifier: Optional[bool] = None, winner: Optional[bool] = None,
+                           nationality: Optional[str] = None, tier: Optional[str] = None, region: Optional[str] = None,
+                           mode: Optional[int] = None, group: Optional[str] = None, before: Optional[str] = None,
+                           after: Optional[str] = None, best_of: Optional[int] = None, player: Optional[str] = None,
+                           team: Optional[str] = None) -> dict:
+        endpoint = f'{API_BASE_URL}/records/players'
+        param_names = {'type', 'stat', 'event', 'stage', 'match', 'qualifier', 'winner', 'nationality', 'tier',
+                       'region', 'mode', 'group', 'before', 'after', 'player', 'team'}
+
+        params = {'bestOf': best_of}
+        params |= {k: v for k, v in locals().items() if (k in param_names) and (v is not None)}
+
+        results = self._get_results(endpoint, params).get('records')
+        return results
+
+    def get_team_records(self, type: str, stat: str, event: Optional[str] = None, stage: Optional[int] = None,
+                         match: Optional[str] = None, qualifier: Optional[bool] = None, winner: Optional[bool] = None,
+                         nationality: Optional[str] = None, tier: Optional[str] = None, region: Optional[str] = None,
+                         mode: Optional[int] = None, group: Optional[str] = None, before: Optional[str] = None,
+                         after: Optional[str] = None, best_of: Optional[int] = None,
+                         team: Optional[str] = None) -> dict:
+        endpoint = f'{API_BASE_URL}/records/teams'
+        param_names = {'type', 'stat', 'event', 'stage', 'match', 'qualifier', 'winner', 'nationality', 'tier',
+                       'region', 'mode', 'group', 'before', 'after', 'player', 'team'}
+
+        params = {'bestOf': best_of}
+        params |= {k: v for k, v in locals().items() if (k in param_names) and (v is not None)}
+
+        results = self._get_results(endpoint, params).get('records')
+        return results
+
