@@ -52,15 +52,20 @@ class Octane:
         result = self._get_results(endpoint).get('participants')
         return result
 
-    def get_matches(self, after: Union[str], before: Optional[str] = None,
-                    event: Optional[str] = None, stage: Optional[int] = None, substage: Optional[int] = None,
-                    sort: Optional[str] = None, order: Optional[str] = None, page: Optional[int] = None,
-                    per_page: Optional[str] = '20') -> list:
+    def get_matches(self, event: Optional[str] = None, stage: Optional[int] = None, qualifier: Optional[bool] = None,
+                    tier: Optional[str] = None, region: Optional[str] = None, mode: Optional[int] = None,
+                    group: Optional[str] = None, before: Optional[str] = None, after: Optional[str] = None,
+                    best_of: Optional[int] = None, reverse_sweep: Optional[bool] = None,
+                    reverse_sweep_attempt: Optional[bool] = None, player: Optional[str] = None,
+                    team: Optional[str] = None, sort: Optional[str] = None, order: Optional[str] = None,
+                    page: int = 1, per_page: int = 50) -> list:
         endpoint = f'{API_BASE_URL}/matches'
-        other_params = {'event', 'stage', 'substage', 'sort', 'order', 'page'}
+        param_names = {'event', 'stage', 'qualifier', 'tier', 'region', 'mode', 'group', 'before', 'after',
+                       'player', 'team', 'sort', 'order', 'page'}
 
-        params = self._handle_date_params(before, after)
-        params |= {k: v for k, v in locals().items() if (k in other_params) and (v is not None)}
+        params = {'bestOf': best_of, 'reverseSweep': reverse_sweep, 'reverseSweepAttempt': reverse_sweep_attempt,
+                  'perPage': per_page}
+        params |= {k: v for k, v in locals().items() if (k in param_names) and (v is not None)}
 
         results = self._get_results(endpoint, params).get('matches')
         return results
@@ -68,6 +73,11 @@ class Octane:
     def get_match(self, match_id: str) -> dict:
         endpoint = f'{API_BASE_URL}/matches/{match_id}'
         result = self._get_results(endpoint)
+        return result
+
+    def get_match_games(self, match_id: str) -> list:
+        endpoint = f'{API_BASE_URL}/matches/{match_id}/games'
+        result = self._get_results(endpoint).get('games')
         return result
 
     def get_games(self, event: Optional[str] = None, match: Optional[str] = None,
