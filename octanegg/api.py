@@ -101,13 +101,14 @@ class Octane:
         result = self._get_results(endpoint)
         return result
 
-    def get_players(self, country: Optional[str] = None, tag: Optional[str] = None,
+    def get_players(self, tag: Optional[str] = None, country: Optional[str] = None,
                     team: Optional[str] = None, sort: Optional[str] = None, order: Optional[str] = None,
-                    page: Optional[int] = None, per_page: Optional[str] = '20') -> list:
+                    page: int = 1, per_page: int = 100) -> list:
         endpoint = f'{API_BASE_URL}/players'
-        other_params = {'country', 'tag', 'team', 'sort', 'order', 'page'}
+        param_names = {'country', 'tag', 'team', 'sort', 'order', 'page'}
 
-        params = {k: v for k, v in locals().items() if (k in other_params) and (v is not None)}
+        params = {'perPage': per_page}
+        params |= {k: v for k, v in locals().items() if (k in param_names) and (v is not None)}
 
         results = self._get_results(endpoint, params).get('players')
         return results
