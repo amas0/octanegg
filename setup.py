@@ -7,7 +7,7 @@ with open(readme_path, 'r', encoding='utf-8') as f:
     long_description = f.read()
 
 setup(name='octanegg',
-      version='1.0',
+      version='1.0.1',
       author='amas0',
       author_email='andrew.mascioli1@gmail.com',
       description='Python client library for octane.gg public API',
