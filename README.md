@@ -14,9 +14,10 @@ For questions about API usage, the [Octane.gg discord](https://t.co/aikJXkBPQG?a
 
 ## Installation
 
+Simply install the package via pip:
+
 ```bash
-git clone https://github.com/amas0/octanegg.git
-pip install ./octanegg
+pip install octanegg
 ```
 
 ## Example usage
